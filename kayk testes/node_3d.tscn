@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bww4mexuexd5k"]
+
+[ext_resource type="Script" uid="uid://baeon22bwwfjt" path="res://physical_bone_simulator_3d.gd" id="1_a202f"]
+
+[node name="Node3D" type="Node3D" unique_id=567347190]
+
+[node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="." unique_id=1897807150]
+script = ExtResource("1_a202f")
