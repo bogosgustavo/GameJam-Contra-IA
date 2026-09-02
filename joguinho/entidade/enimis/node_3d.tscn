@@ -5,8 +5,10 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6jj3l"]
 
-[node name="Node3D" type="Node3D" unique_id=775029128]
+[node name="Node3D" type="Node3D" unique_id=775029128 node_paths=PackedStringArray("combat_ui", "ui_sprite")]
 script = ExtResource("1_dlpor")
+combat_ui = NodePath("CanvasLayer")
+ui_sprite = NodePath("CanvasLayer/Control/TextureRect")
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=823773931]
 texture = ExtResource("2_2hjdr")
@@ -18,10 +20,24 @@ transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 shape = SubResource("BoxShape3D_6jj3l")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=354597290]
-visible = false
 
-[node name="Control" type="Control" parent="CanvasLayer" unique_id=551807870]
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=910167397]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control" unique_id=382390519]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 2.3919997
+anchor_bottom = 2.3919997
+offset_right = 54.320007
+offset_bottom = 54.320007
+mouse_filter = 0
+texture = ExtResource("2_2hjdr")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[connection signal="gui_input" from="CanvasLayer/Control/TextureRect" to="." method="_on_texture_rect_gui_input"]
+[connection signal="gui_input" from="CanvasLayer/Control/TextureRect" to="." method="_on_control_gui_input"]
