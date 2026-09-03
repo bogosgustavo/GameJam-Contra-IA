@@ -55,6 +55,17 @@ func set_generate_occluders(new_value):
 	generate_occluders = new_value
 	refresh()
 
+# Camadas de física usadas pelo corpo estático gerado.
+# Precisa bater com o collision_mask dos RayCast3D (FrontRay/BackRay) do player.
+@export_flags_3d_physics var collision_layer:int = 1 : set = set_collision_layer
+func set_collision_layer(new_value):
+	collision_layer = new_value
+	refresh()
+@export_flags_3d_physics var collision_mask:int = 1 : set = set_collision_mask
+func set_collision_mask(new_value):
+	collision_mask = new_value
+	refresh()
+
 var faces
 var visual
 var body
@@ -99,8 +110,18 @@ func refresh():
 		return
 	body = PhysicsServer3D.body_create()
 	PhysicsServer3D.body_set_mode(body, PhysicsServer3D.BODY_MODE_STATIC)
+	# Define explicitamente layer/mask do corpo, para garantir que os
+	# RayCast3D do player (ou qualquer outro collider) consigam detectá-lo.
+	PhysicsServer3D.body_set_collision_layer(body, collision_layer)
+	PhysicsServer3D.body_set_collision_mask(body, collision_mask)
 	shape = PhysicsServer3D.concave_polygon_shape_create()
-	PhysicsServer3D.shape_set_data(shape, {"faces" : mesh.get_faces()})
+	# backface_collision:true faz a shape colidir pelos dois lados do
+	# triângulo, evitando que o player atravesse a parede por causa do
+	# winding order dos vértices gerados no SurfaceTool.
+	PhysicsServer3D.shape_set_data(shape, {
+		"faces": mesh.get_faces(),
+		"backface_collision": true
+	})
 	if is_inside_tree():
 		PhysicsServer3D.body_add_shape(body, shape, global_transform)
 		PhysicsServer3D.body_set_space(body, get_world_3d().space)

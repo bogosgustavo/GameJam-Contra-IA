@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cwybxin3aaefa"]
+
+[ext_resource type="Script" uid="uid://b0rcdq02naa6f" path="res://combate/Combat bounce.gd" id="1_773at"]
+
+[node name="CombatBounce" type="CanvasLayer" unique_id=1190500204]
+visible = false
+script = ExtResource("1_773at")
+
+[node name="Control" type="Control" parent="." unique_id=1810906595]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="UISprite" type="TextureRect" parent="Control" unique_id=1278006517]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

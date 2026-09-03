@@ -65,11 +65,12 @@ func _get_grids_to_move() -> int:
 
 func _move_forward():
 	if in_combat: 
-		return # Impede mover se estiver em combate
+		return
 
 	var grids = _get_grids_to_move()
 	var original_target = front_ray.target_position
 
+	# Atualiza a posição do raio para a distância total do movimento
 	front_ray.target_position = Vector3.FORWARD * GRID_SIZE * grids
 	front_ray.force_raycast_update()
 
@@ -78,50 +79,47 @@ func _move_forward():
 	if front_ray.is_colliding():
 		var collision_point = front_ray.get_collision_point()
 		var distance_to_wall = global_position.distance_to(collision_point)
-		allowed_grids = floor((distance_to_wall - 0.05) / GRID_SIZE)
+		
+		# Desconta uma pequena margem (0.1) para não colar na parede
+		allowed_grids = floor((distance_to_wall - 0.1) / GRID_SIZE)
 
 	front_ray.target_position = original_target
 	front_ray.force_raycast_update()
 
+	# Se não houver espaço nem para 1 bloco, cancela o movimento
 	if allowed_grids <= 0:
 		_reset_acceleration()
 		return
 
 	var distance = GRID_SIZE * allowed_grids
 
+	# Calcula o destino no espaço global
+	var target_pos = global_transform.translated_local(Vector3.FORWARD * distance).origin
+	
+	# TRAVA NO GRID: Arredonda X e Z para evitar o desvio acumulado para as paredes
+	target_pos.x = snapped(target_pos.x, 1.0)
+	target_pos.z = snapped(target_pos.z, 1.0)
+
 	tween = create_tween()
 	tween.set_trans(Tween.TRANS_QUAD)
 	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(
-		self,
-		"transform",
-		transform.translated_local(Vector3.FORWARD * distance),
-		TRAVEL_TIME
-	)
+	tween.tween_property(self, "global_position", target_pos, TRAVEL_TIME)
 
 
 func _turn_left():
 	tween = create_tween()
 	tween.set_trans(Tween.TRANS_QUAD)
 	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(
-		self,
-		"transform:basis",
-		transform.basis.rotated(Vector3.UP, PI / 2),
-		TRAVEL_TIME
-	)
+	# Rotação cravada no eixo Y para evitar distorção de matriz
+	tween.tween_property(self, "rotation:y", rotation.y + (PI / 2.0), TRAVEL_TIME)
 
 
 func _turn_right():
 	tween = create_tween()
 	tween.set_trans(Tween.TRANS_QUAD)
 	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(
-		self,
-		"transform:basis",
-		transform.basis.rotated(Vector3.UP, -PI / 2),
-		TRAVEL_TIME
-	)
+	# Rotação cravada no eixo Y para evitar distorção de matriz
+	tween.tween_property(self, "rotation:y", rotation.y - (PI / 2.0), TRAVEL_TIME)
 
 
 func _reset_acceleration():
@@ -140,21 +138,23 @@ func start_combat(enemy):
 		tween.kill()
 		tween = null
 
-	# Salva exatamente onde o player estava no mapa 3D
+	# Salva a posição e rotação do jogador no grid
 	map_position = global_position
 	map_basis = global_transform.basis
 
-	# Esconde o modelo 3D do inimigo no mapa, pois ele virou GUI
-	enemy.get_node("Sprite3D").visible = false
+	# Esconde a imagem 3D do inimigo se ela existir
+	if enemy.has_node("Sprite3D"):
+		enemy.get_node("Sprite3D").visible = false
+
 
 func finish_combat():
 	if current_enemy:
-		current_enemy.queue_free() # Remove o inimigo do mapa
+		current_enemy.queue_free()
 
 	current_enemy = null
 	in_combat = false
 	
-	# Restaura a posição exata do player no grid
+	# Restaura a posição exata
 	global_position = map_position
 	global_transform.basis = map_basis
 	_reset_acceleration()

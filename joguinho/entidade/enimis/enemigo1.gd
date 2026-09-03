@@ -28,7 +28,6 @@ func _process(delta):
 	# Atualiza a posição da GUI
 	ui_sprite.position += ui_velocity * delta
 
-	# Rebatedor das bordas da tela (evita prender nas extremidades)
 	if ui_sprite.position.x <= 0:
 		ui_sprite.position.x = 1
 		ui_velocity.x = abs(ui_velocity.x)
@@ -53,7 +52,6 @@ func _on_area_entered(area_hit):
 		
 		if combat_ui:
 			combat_ui.visible = true
-			# Posiciona a imagem no centro da tela ao iniciar a luta
 			var screen_size = get_viewport().get_visible_rect().size
 			ui_sprite.position = (screen_size / 2.0) - (ui_sprite.size / 2.0)
 			

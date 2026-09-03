@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://bji3k84g4yghg"]
 
 [ext_resource type="PackedScene" uid="uid://nac4lkmdoaml" path="res://level_block.tscn" id="1_a0tk4"]
-[ext_resource type="Script" uid="uid://bwejrisfvax7a" path="res://combate/Enemy data.gd" id="4_jka67"]
+[ext_resource type="Script" uid="uid://b0qlaqpotot6l" path="res://combate/Enemy.gd" id="4_jka67"]
 [ext_resource type="PackedScene" uid="uid://vb56pn2b4f2i" path="res://entidade/player/player.tscn" id="4_r3fl7"]
 [ext_resource type="Resource" uid="uid://b1u3x35ib38if" path="res://robozin1.tres" id="5_i5arm"]
 [ext_resource type="PackedScene" uid="uid://c7ctw2ufbfo4g" path="res://entidade/enimis/node_3d.tscn" id="5_jka67"]
+[ext_resource type="PackedScene" uid="uid://cwybxin3aaefa" path="res://combate/combat_bounce.tscn" id="6_wc5p8"]
 
 [node name="Node3D" type="Node3D" unique_id=2030971774]
 
@@ -15,7 +16,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="enemy" parent="." unique_id=775029128 instance=ExtResource("5_jka67")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.302866)
-
-[node name="enemy2" parent="." unique_id=1310431486 instance=ExtResource("5_jka67")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20.181143)
-enemy_data_list = Array[ExtResource("4_jka67")]([ExtResource("5_i5arm")])
+script = ExtResource("4_jka67")
+enemy_data = ExtResource("5_i5arm")
+combat_scene = ExtResource("6_wc5p8")

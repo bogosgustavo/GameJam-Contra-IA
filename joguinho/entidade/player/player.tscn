@@ -1,6 +1,157 @@
 [gd_scene format=3 uid="uid://vb56pn2b4f2i"]
 
-[ext_resource type="Script" uid="uid://iamerwfijj8j" path="res://entidade/player/player.gd" id="1_6jj3l"]
+[sub_resource type="GDScript" id="GDScript_xk3i5"]
+script/source = "extends Node3D
+
+const GRID_SIZE := 2.0
+const TRAVEL_TIME := 0.08
+const ACCELERATION_WINDOW := 0.30
+
+@onready var front_ray: RayCast3D = $FrontRay
+@onready var back_ray: RayCast3D = $BackRay
+@onready var camera: Camera3D = $Camera3D
+
+var tween: Tween
+var click_combo := 0
+var last_move_click_time := 0.0
+
+var in_combat := false
+var current_enemy = null
+var map_position: Vector3
+var map_basis: Basis
+
+func _input(event):
+	if in_combat:
+		return
+
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if tween != null and tween.is_running():
+			return
+
+		var viewport_width = get_viewport().size.x
+		var zone_width = viewport_width / 3.0
+		var click_x = event.position.x
+
+		if click_x < zone_width:
+			_reset_acceleration()
+			_turn_left()
+		elif click_x > zone_width * 2.0:
+			_reset_acceleration()
+			_turn_right()
+		else:
+			_register_move_click()
+			_move_forward()
+
+
+func _register_move_click():
+	var current_time = Time.get_ticks_msec() / 1000.0
+	var time_between_clicks = current_time - last_move_click_time
+
+	if time_between_clicks <= ACCELERATION_WINDOW:
+		click_combo += 1
+	else:
+		click_combo = 1
+
+	last_move_click_time = current_time
+
+
+func _get_grids_to_move() -> int:
+	if click_combo >= 7:
+		return 4
+	elif click_combo >= 5:
+		return 3
+	elif click_combo >= 3:
+		return 2
+
+	return 1
+
+
+func _move_forward():
+	if in_combat: 
+		return
+
+	var grids = _get_grids_to_move()
+	var original_target = front_ray.target_position
+
+	front_ray.target_position = Vector3.FORWARD * GRID_SIZE * grids
+	front_ray.force_raycast_update()
+
+	var allowed_grids = grids
+
+	if front_ray.is_colliding():
+		var collision_point = front_ray.get_collision_point()
+		var distance_to_wall = global_position.distance_to(collision_point)
+		
+		allowed_grids = floor((distance_to_wall - 0.1) / GRID_SIZE)
+
+	front_ray.target_position = original_target
+	front_ray.force_raycast_update()
+
+	if allowed_grids <= 0:
+		_reset_acceleration()
+		return
+
+	var distance = GRID_SIZE * allowed_grids
+
+	var target_pos = global_transform.translated_local(Vector3.FORWARD * distance).origin
+	
+	target_pos.x = snapped(target_pos.x, 1.0)
+	target_pos.z = snapped(target_pos.z, 1.0)
+
+	tween = create_tween()
+	tween.set_trans(Tween.TRANS_QUAD)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, \"global_position\", target_pos, TRAVEL_TIME)
+
+
+func _turn_left():
+	tween = create_tween()
+	tween.set_trans(Tween.TRANS_QUAD)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, \"rotation:y\", rotation.y + (PI / 2.0), TRAVEL_TIME)
+
+
+func _turn_right():
+	tween = create_tween()
+	tween.set_trans(Tween.TRANS_QUAD)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, \"rotation:y\", rotation.y - (PI / 2.0), TRAVEL_TIME)
+
+
+func _reset_acceleration():
+	click_combo = 0
+	last_move_click_time = 0.0
+
+
+func start_combat(enemy):
+	if in_combat:
+		return
+
+	in_combat = true
+	current_enemy = enemy
+
+	if tween != null:
+		tween.kill()
+		tween = null
+
+	map_position = global_position
+	map_basis = global_transform.basis
+
+	if enemy.has_node(\"Sprite3D\"):
+		enemy.get_node(\"Sprite3D\").visible = false
+
+
+func finish_combat():
+	if current_enemy:
+		current_enemy.queue_free()
+
+	current_enemy = null
+	in_combat = false
+	
+	global_position = map_position
+	global_transform.basis = map_basis
+	_reset_acceleration()
+"
 
 [sub_resource type="Animation" id="Animation_6jj3l"]
 length = 0.001
@@ -50,17 +201,17 @@ _data = {
 [sub_resource type="BoxShape3D" id="BoxShape3D_xivn3"]
 
 [node name="Player" type="Node3D" unique_id=208686943]
-script = ExtResource("1_6jj3l")
+script = SubResource("GDScript_xk3i5")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=702171638]
 fov = 90.0
 
 [node name="FrontRay" type="RayCast3D" parent="." unique_id=233986092]
-target_position = Vector3(0, 0, -2)
+target_position = Vector3(0, 0, -1)
 hit_from_inside = true
 
 [node name="BackRay" type="RayCast3D" parent="." unique_id=340614656]
-target_position = Vector3(0, 0, -2)
+target_position = Vector3(0, 0, -1)
 hit_from_inside = true
 
 [node name="Animation" type="AnimationPlayer" parent="." unique_id=766856285]

@@ -1,0 +1,105 @@
+[gd_scene format=3 uid="uid://c7ctw2ufbfo4g"]
+
+[ext_resource type="Texture2D" uid="uid://bt8bas6rmw4c8" path="res://entidade/enimis/4765d15c67648418f6c69cac40746bc8.jpg" id="2_2hjdr"]
+[ext_resource type="Resource" uid="uid://b1u3x35ib38if" path="res://robozin1.tres" id="2_lqq4v"]
+[ext_resource type="PackedScene" uid="uid://cwybxin3aaefa" path="res://combate/combat_bounce.tscn" id="3_wmbt5"]
+
+[sub_resource type="GDScript" id="GDScript_xivn3"]
+script/source = "extends Node3D
+class_name Enemy
+
+## Status deste inimigo específico (hits necessários, velocidade, sprite...)
+@export var enemy_data: EnemyData
+
+## Qual mecânica de combate este inimigo usa (arraste um .tscn com script CombatBase)
+@export var combat_scene: PackedScene
+
+@onready var area: Area3D = $Area3D
+
+var is_in_battle := false
+var cached_player: Node3D = null
+var combat_instance: CombatBase = null
+
+func _ready():
+	area.area_entered.connect(_on_area_entered)
+
+func _on_area_entered(area_hit: Area3D) -> void:
+	if is_in_battle:
+		return
+
+	var player = area_hit.get_parent()
+	if not player.has_method(\"start_combat\"):
+		return
+
+	# Evita que dois inimigos iniciem combate ao mesmo tempo se o player
+	# encostar em ambos quase junto.
+	if \"in_combat\" in player and player.in_combat:
+		return
+
+	if enemy_data == null or combat_scene == null:
+		push_warning(\"Enemy '%s': enemy_data ou combat_scene não configurado.\" % name)
+		return
+
+	is_in_battle = true
+	cached_player = player
+	area.set_deferred(\"monitoring\", false)
+
+	_start_combat_ui()
+	player.start_combat(self)
+
+func _start_combat_ui() -> void:
+	combat_instance = combat_scene.instantiate()
+	get_tree().root.add_child(combat_instance)
+	combat_instance.combat_won.connect(_on_combat_won)
+	combat_instance.start_combat(enemy_data)
+
+func _on_combat_won() -> void:
+	if combat_instance:
+		combat_instance.queue_free()
+		combat_instance = null
+
+	if cached_player and cached_player.has_method(\"finish_combat\"):
+		cached_player.finish_combat()
+
+	queue_free()
+"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6jj3l"]
+
+[node name="Node3D" type="Node3D" unique_id=775029128]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.531896, -0.2748003, 17.302303)
+script = SubResource("GDScript_xivn3")
+enemy_data = ExtResource("2_lqq4v")
+combat_scene = ExtResource("3_wmbt5")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=823773931]
+texture = ExtResource("2_2hjdr")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=603362928]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=184176006]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+shape = SubResource("BoxShape3D_6jj3l")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=354597290]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=910167397]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control" unique_id=382390519]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 2.3919997
+anchor_bottom = 2.3919997
+offset_right = 54.320007
+offset_bottom = 54.320007
+mouse_filter = 0
+texture = ExtResource("2_2hjdr")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[connection signal="gui_input" from="CanvasLayer/Control/TextureRect" to="." method="_on_texture_rect_gui_input"]
+[connection signal="gui_input" from="CanvasLayer/Control/TextureRect" to="." method="_on_control_gui_input"]

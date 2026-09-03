@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://dnkpfugcohu5n"]
+
+[ext_resource type="Script" uid="uid://bwejrisfvax7a" path="res://combate/Enemy data.gd" id="1_yynos"]
+[ext_resource type="Texture2D" uid="uid://bt8bas6rmw4c8" path="res://entidade/enimis/4765d15c67648418f6c69cac40746bc8.jpg" id="2_e6at1"]
+
+[resource]
+script = ExtResource("1_yynos")
+required_hits = 2
+ui_velocity = Vector2(-1000, 10)
+sprite_texture = ExtResource("2_e6at1")
+metadata/_custom_type_script = "uid://bwejrisfvax7a"

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://nac4lkmdoaml"]
+
+[ext_resource type="Script" uid="uid://cacqvqw2jc6gn" path="res://addons/level_block/level_block_node.gd" id="1_ecxdb"]
+[ext_resource type="Material" uid="uid://c71yladfjhgud" path="res://addons/level_block/default_material.tres" id="2_t23xu"]
+[ext_resource type="Texture2D" uid="uid://dul4gcwu55m0b" path="res://addons/level_block/example_tileset.png" id="3_y8fpr"]
+
+[node name="LevelBlock" type="Node3D" unique_id=1145604049]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+script = ExtResource("1_ecxdb")
+material = ExtResource("2_t23xu")
+texture_sheet = ExtResource("3_y8fpr")
+east_face = 0
+west_face = 0
+top_face = 5
+bottom_face = 4
+metadata/_custom_type_script = "uid://cacqvqw2jc6gn"
