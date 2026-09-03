@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cklnubstsyvqd"]
+
+[ext_resource type="Texture2D" uid="uid://cvfatvlg5imle" path="res://paredetetochao.png" id="1_btcp8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_btcp8"]
+albedo_texture = ExtResource("1_btcp8")
+
+[node name="teto" type="Node3D" unique_id=929340676]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -1.8000001)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1114254296]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 8.3, 2.9, -12.3)
+material_override = SubResource("StandardMaterial3D_btcp8")
+size = Vector3(70, 0.5, 70)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="CSGBox3D" unique_id=1858324149]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.9, 0)
+light_energy = 16.0
+omni_range = 44.7

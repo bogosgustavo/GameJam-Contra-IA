@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://3w0a4ufouiew"]
+
+[ext_resource type="Script" uid="uid://do3caly7ynhda" path="res://objeto/personagem.gd" id="1_3336f"]
+[ext_resource type="PackedScene" uid="uid://ofplqvjxx5kh" path="res://GLB format/chair.glb" id="2_lh3dq"]
+[ext_resource type="Script" uid="uid://ce3f85xkeb4x3" path="res://objeto/camera_3d.gd" id="3_t8y85"]
+
+[node name="personagem" type="CharacterBody3D" unique_id=563411796]
+script = ExtResource("1_3336f")
+
+[node name="chair2" parent="." unique_id=1354604471 instance=ExtResource("2_lh3dq")]
+
+[node name="Node3D" type="Node3D" parent="." unique_id=1469917219]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=402874273]
+unique_name_in_owner = true
+transform = Transform3D(0.13052495, 0.12511936, -0.98351836, 0, 0.99200493, 0.12619899, 0.991445, -0.016472116, 0.12948139, -3.9999998, 0, -5.9604645e-08)
+fov = 71.32708
+script = ExtResource("3_t8y85")

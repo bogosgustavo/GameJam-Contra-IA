@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://crnotpnlbg0bp"]
+
+[ext_resource type="PackedScene" uid="uid://ccbda6wvcca8m" path="res://objeto/barrel1.tscn" id="2_a0tk4"]
+[ext_resource type="PackedScene" uid="uid://dh73vmmpc3kfa" path="res://objeto/barrel.tscn" id="2_noarx"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_8w10v"]
+size = Vector3(11.335968, 2.1464844, 4.5043945)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wvnxi"]
+size = Vector2(10, 10)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_a202f"]
+data = PackedVector3Array(5, 0, 5, -5, 0, 5, 5, 0, -5, -5, 0, 5, -5, 0, -5, 5, 0, -5)
+
+[node name="Node3D" type="Node3D" unique_id=1071729867]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15559077, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=472266293]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1192209174]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6477413, 2.0847409, -3.2419226)
+mesh = SubResource("BoxMesh_8w10v")
+
+[node name="Label" type="Label" parent="MeshInstance3D" unique_id=2065566527]
+anchors_preset = -1
+anchor_right = 0.90000004
+anchor_bottom = 0.61
+offset_left = 7.0
+offset_top = 14.0
+offset_right = 9.199951
+offset_bottom = 16.720001
+text = "ola seu pedaço de humano despresivel"
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1795589694]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09012866, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1231234192]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6074114, 1.0181756, 0)
+mesh = SubResource("PlaneMesh_wvnxi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1021948598]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6878104, 1.0181756, 0)
+shape = SubResource("ConcavePolygonShape3D_a202f")
+
+[node name="barrel" parent="." unique_id=1737475409 instance=ExtResource("2_noarx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.058686, 1.0181756, 2.756207)
+
+[node name="barrel2" parent="." unique_id=1653195972 instance=ExtResource("2_a0tk4")]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=884395797]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.474824, 2.1393452, 4.795581)

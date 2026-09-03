@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://bt5c33s4nb5so"]
+
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://personagem/brackeys-proto-controller-main/proto_controller/proto_controller.tscn" id="1_e87g2"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cx5gw"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_7g8v6"]
+sky_material = SubResource("ProceduralSkyMaterial_cx5gw")
+
+[sub_resource type="Environment" id="Environment_yvffv"]
+background_mode = 2
+sky = SubResource("Sky_7g8v6")
+glow_enabled = true
+
+[node name="jogo" type="Node3D" unique_id=2040444744]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=927916599]
+environment = SubResource("Environment_yvffv")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1555280616]
+transform = Transform3D(0.9396927, 0.29619813, -0.17101006, 2.7805948e-08, 0.49999994, 0.8660255, 0.34202012, -0.8137978, 0.46984625, -1, 3.0000002, 3.2)
+shadow_enabled = true
+
+[node name="chao" type="CSGBox3D" parent="." unique_id=2134325712]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3500004, 0, 2.5500002)
+use_collision = true
+size = Vector3(27.1, 1, 16.300001)
+
+[node name="laberinto" type="CSGCombiner3D" parent="." unique_id=1024563627]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3500004, 0, 2.5500002)
+use_collision = true
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="laberinto" unique_id=858396049]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0000002, 1, -4.05)
+size = Vector3(6.5, 1, 0.4)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="laberinto" unique_id=690542950]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8000004, 1, -2.8000002)
+size = Vector3(4.9, 1, 0.5)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="laberinto" unique_id=1252366302]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4999995, 1, -1.9000001)
+size = Vector3(0.5, 1, 4.7000003)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="laberinto" unique_id=2047433850]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10000038, 1, -1.3000002)
+size = Vector3(0.5, 1, 3.5)
+
+[node name="ProtoController" parent="." unique_id=347999915 instance=ExtResource("1_e87g2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0.5, 6.4)

@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://ccbda6wvcca8m"]
+
+[ext_resource type="PackedScene" uid="uid://c7q3l62o1v5ph" path="res://GLB format/barrel.glb" id="1_mkr8d"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8w10v"]
+size = Vector3(0.54016113, 0.6101532, 0.57888794)
+
+[sub_resource type="Animation" id="Animation_8chfn"]
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.03333333, 0.93333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-5, 0, 2.9), Vector3(0, 3, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.93333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-2.1991148, 6.2831855, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_3o0aq"]
+resource_name = "new_animation"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.26666668),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 2, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.33333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -1.3229595, 0), Vector3(0.6806784, -1.3229595, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(5, 5, 5), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kshir"]
+_data = {
+&"RESET": SubResource("Animation_8chfn"),
+&"new_animation": SubResource("Animation_3o0aq")
+}
+
+[node name="barrel" unique_id=1737475409 instance=ExtResource("1_mkr8d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 2.9)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1" unique_id=1214525426]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.019592285, 0.2078476, -0.0393219)
+shape = SubResource("BoxShape3D_8w10v")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2" unique_id=2065305425]
+libraries/ = SubResource("AnimationLibrary_kshir")
+autoplay = &"RESET"
