@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="BossData" format=3 uid="uid://b67kudnow1br2"]
+
+[ext_resource type="Texture2D" uid="uid://bbme8vmga4kui" path="res://entidade/enimis/8f620ea398e2eb60f524d561da02ef84.jpg" id="1_7dbqy"]
+[ext_resource type="Texture2D" uid="uid://d2csaa12enljp" path="res://entidade/enimis/0f22bab77c8c91b73fbe549956c43e8b.jpg" id="1_ie8jc"]
+[ext_resource type="Texture2D" uid="uid://f554h5qmiyv8" path="res://entidade/enimis/e3f3f0e4548ad92fa61f76dfdc3e5594.jpg" id="1_mw3nm"]
+[ext_resource type="Script" uid="uid://cf33s4pf7kquk" path="res://combate/boss_data.gd" id="1_p1v1g"]
+[ext_resource type="Texture2D" uid="uid://vc73yl2i3ar0" path="res://entidade/enimis/0c201b1e7656565d31f24d19d0990d12.jpg" id="2_7dbqy"]
+[ext_resource type="Texture2D" uid="uid://dgxx6evopl5g0" path="res://entidade/enimis/ff6ae27a795088763e7881ae4855827c.jpg" id="2_iqn5b"]
+[ext_resource type="Texture2D" uid="uid://dcqt43xjda7f4" path="res://entidade/enimis/f862813d2f935a0ceb19b80dca4b1518.jpg" id="4_nea64"]
+[ext_resource type="Texture2D" uid="uid://dp55ay3e5q3kh" path="res://entidade/enimis/63af76c9682920f800251d792a87b105.jpg" id="5_nea64"]
+[ext_resource type="Texture2D" uid="uid://bt8bas6rmw4c8" path="res://entidade/enimis/4765d15c67648418f6c69cac40746bc8.jpg" id="6_i8n60"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xo6ri"]
+load_path = "res://.godot/imported/4765d15c67648418f6c69cac40746bc8.jpg-c55e507f4dc4b031576ce32a68e58a4a.s3tc.ctex"
+
+[resource]
+script = ExtResource("1_p1v1g")
+paper_texture = ExtResource("1_mw3nm")
+printer_texture = ExtResource("2_iqn5b")
+throw_interval = 2.0
+vulnerable_duration = 6.0
+papers_per_throw = 3
+paper_speed = 300.0
+throwing_texture = ExtResource("5_nea64")
+vulnerable_texture = ExtResource("6_i8n60")
+throwing_display_time = 0.2
+hit_textures = Array[Texture2D]([ExtResource("1_ie8jc"), ExtResource("2_7dbqy"), SubResource("CompressedTexture2D_xo6ri")])
+hp_thresholds = Array[float]([1.0, 0.75, 0.5, 0.25])
+papers_at_threshold = Array[int]([1, 2, 3, 5])
+final_texture = ExtResource("1_7dbqy")
+enemy_name = "boss"
+required_hits = 1
+ui_velocity = Vector2(0, 0)
+sprite_texture = ExtResource("4_nea64")
+metadata/_custom_type_script = "uid://cf33s4pf7kquk"

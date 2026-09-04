@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cglmdkdn141n8"]
+
+[ext_resource type="Script" uid="uid://01rtxli3gj4q" path="res://combate/combat_boss.gd" id="1_mwrgu"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=1399774591]
+script = ExtResource("1_mwrgu")
+
+[node name="Control" type="Control" parent="." unique_id=24026100]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BossSprite" type="TextureRect" parent="Control" unique_id=298415405]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Paper" type="TextureRect" parent="Control" unique_id=865124350]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Printer" type="TextureRect" parent="Control" unique_id=1962981265]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
